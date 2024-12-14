@@ -9,7 +9,6 @@ const HomePage: React.FC = () => {
   const { data, loading, error } = useFetch(
     'https://pokeapi.co/api/v2/pokemon?limit=100&offset=0'
   );
-console.log(data)
   const [filteredPokemons, setFilteredPokemons] = useState<any[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedType, setSelectedType] = useState('');
