@@ -113,6 +113,7 @@ const HomePage: React.FC = () => {
               <li>HP: {pokemon.stats.find((s: { stat: { name: string; }; }) => s.stat.name === 'hp')?.base_stat || 0}</li>
               <li>Attack: {pokemon.stats.find((s: { stat: { name: string; }; }) => s.stat.name === 'attack')?.base_stat || 0}</li>
               <li>Defense: {pokemon.stats.find((s: { stat: { name: string; }; }) => s.stat.name === 'defense')?.base_stat || 0}</li>
+              <li>Speed: {pokemon.stats.find((s: { stat: { name: string; }; }) => s.stat.name === 'speed')?.base_stat || 0}</li>
             </ul>
             <ul>
               <li>Abilities:</li>
