@@ -1,0 +1,121 @@
+/* src/index.css */
+
+/* Base Tailwind Styles */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom Styles */
+.pokemon-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 columns */
+  gap: 16px; /* Space between cards */
+}
+
+.pokemon-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ccc; /* Row separator */
+  padding: 16px 0;
+}
+
+.pokemon-row:last-child {
+  border-bottom: none; /* Remove border for the last row */
+}
+
+.pokemon-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.pokemon-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.pokemon-card img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+}
+
+.pokemon-card h3 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 12px 0;
+}
+
+.pokemon-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0;
+}
+
+.pokemon-card ul li {
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+/* Search Input and Select Dropdown Styles */
+
+/* Input and Select Styling */
+.input-field,
+.select-field {
+  width: 100%;
+  max-width: 300px;
+  padding: 12px 16px;
+  font-size: 1rem;
+  border: 1px solid #d1d5db; /* Light gray border */
+  border-radius: 8px;
+  background-color: #f9fafb; /* Light background */
+  color: #374151; /* Dark gray text */
+  transition: border-color 0.3s, box-shadow 0.3s;
+  outline: none;
+}
+
+.input-field:focus,
+.select-field:focus {
+  border-color: #2563eb; /* Blue border on focus */
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3); /* Blue shadow */
+}
+
+.input-field:hover,
+.select-field:hover {
+  border-color: #9ca3af; /* Gray border on hover */
+}
+
+.select-field {
+  appearance: none; /* Remove default dropdown arrow */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='gray'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 011.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px 16px;
+}
+
+.button {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  background-color: #2563eb; /* Blue background */
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.button:hover {
+  background-color: #1e40af; /* Darker blue on hover */
+}
+
+.button:active {
+  transform: scale(0.95); /* Slight shrink on click */
+}
