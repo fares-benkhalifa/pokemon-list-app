@@ -13,7 +13,6 @@ const HomePage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedType, setSelectedType] = useState('');
   const [sortOption, setSortOption] = useState('');
-
   useEffect(() => {
     if (data && data.results) {
       const fetchDetails = async () => {
@@ -24,6 +23,7 @@ const HomePage: React.FC = () => {
           })
         );
         setFilteredPokemons(details);
+        console.log(details)
       };
       fetchDetails();
     }
@@ -119,6 +119,9 @@ const HomePage: React.FC = () => {
               {pokemon.abilities.map((ability: { ability: { name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; }; }, idx: React.Key | null | undefined) => (
                 <li key={idx}>{ability.ability.name}</li>
               ))}
+            </ul>
+            <ul>
+              <li>Types: {pokemon.types.map((t: {type: {name: string;};}) => t.type.name).join(", ")} </li>
             </ul>
           </div>
         ))}
