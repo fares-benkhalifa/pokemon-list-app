@@ -9,7 +9,7 @@ const HomePage: React.FC = () => {
   const { data, loading, error } = useFetch(
     'https://pokeapi.co/api/v2/pokemon?limit=100&offset=0'
   );
-
+console.log(data)
   const [filteredPokemons, setFilteredPokemons] = useState<any[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedType, setSelectedType] = useState('');
@@ -111,13 +111,13 @@ const HomePage: React.FC = () => {
             <img src={pokemon.sprites.front_default} alt={pokemon.name} />
             <h3>{pokemon.name}</h3>
             <ul>
-              <li>HP: {pokemon.stats.find((s) => s.stat.name === 'hp')?.base_stat || 0}</li>
-              <li>Attack: {pokemon.stats.find((s) => s.stat.name === 'attack')?.base_stat || 0}</li>
-              <li>Defense: {pokemon.stats.find((s) => s.stat.name === 'defense')?.base_stat || 0}</li>
+              <li>HP: {pokemon.stats.find((s: { stat: { name: string; }; }) => s.stat.name === 'hp')?.base_stat || 0}</li>
+              <li>Attack: {pokemon.stats.find((s: { stat: { name: string; }; }) => s.stat.name === 'attack')?.base_stat || 0}</li>
+              <li>Defense: {pokemon.stats.find((s: { stat: { name: string; }; }) => s.stat.name === 'defense')?.base_stat || 0}</li>
             </ul>
             <ul>
               <li>Abilities:</li>
-              {pokemon.abilities.map((ability, idx) => (
+              {pokemon.abilities.map((ability: { ability: { name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; }; }, idx: React.Key | null | undefined) => (
                 <li key={idx}>{ability.ability.name}</li>
               ))}
             </ul>
