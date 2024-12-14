@@ -23,7 +23,6 @@ const HomePage: React.FC = () => {
           })
         );
         setFilteredPokemons(details);
-        console.log(details)
       };
       fetchDetails();
     }
