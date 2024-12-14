@@ -1,27 +1,31 @@
-/* src/index.css */
 
-/* Base Tailwind Styles */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+body {
+  background-color: #FFFDF8;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
 
-/* Custom Styles */
 .pokemon-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 columns */
-  gap: 16px; /* Space between cards */
+  grid-template-columns: repeat(5, 1fr); 
+  gap: 16px; 
 }
 
 .pokemon-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #ccc; /* Row separator */
+  border-bottom: 1px solid #000000;
   padding: 16px 0;
+  margin: 10px;
 }
 
 .pokemon-row:last-child {
-  border-bottom: none; /* Remove border for the last row */
+  border-bottom: none;
 }
 
 .pokemon-card {
@@ -29,11 +33,13 @@
   flex-direction: column;
   align-items: center;
   padding: 16px;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
+  border: 1px solid #E0E3E7;
+  border-radius: 20%;
   background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s, box-shadow 0.2s;
+  color: #3A5CA8;
+  margin: 10px;
 }
 
 .pokemon-card:hover {
@@ -42,17 +48,22 @@
 }
 
 .pokemon-card img {
-  width: 80px;
-  height: 80px;
+  width: 100px;
+  height: 100px;
   object-fit: cover;
 }
-
+.pokemon-card img:hover {
+  transform: scale(1.1);
+}
 .pokemon-card h3 {
   font-size: 1.2rem;
   font-weight: bold;
   margin: 12px 0;
 }
-
+#n {
+  text-align: center;
+  color: crimson;
+}
 .pokemon-card ul {
   list-style: none;
   padding: 0;
@@ -61,38 +72,89 @@
 
 .pokemon-card ul li {
   font-size: 0.9rem;
-  color: #4b5563;
+  color: #e74c3c;
 }
-/* Search Input and Select Dropdown Styles */
+.pagination-items{
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  justify-content: center;
+}
+button, #page-number {
+  font-family: 'Roboto', Arial, sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+#previous-button {
+  background-color: #3B82F6; /* Sky Blue */
+  color: #FFFFFF; /* White Text */
+  border: 2px solid #3B82F6;
+  padding: 8px 12px;
+}
+#previous-button:hover {
+  background-color: #2563EB; /* Darker Blue */
+  border-color: #2563EB;
+}
+#next-button {
+  background-color: #4CAF50; /* Green Success */
+  color: #FFFFFF; /* White Text */
+  border: 2px solid #4CAF50;
+  padding: 8px 12px;
+}
 
-/* Input and Select Styling */
+#next-button:hover {
+  background-color: #388E3C; /* Darker Green */
+  border-color: #388E3C;
+}
+#page-number {
+  background-color: #F9FAFC; /* Light Background */
+  color: #3A5CA8; /* Royal Blue */
+  border: 1px solid #E0E3E7; /* Light Gray Border */
+  padding: 6px 10px;
+  margin: 0 5px;
+  border-radius: 50%; /* Makes it a circle */
+}
+
+#page-number.active {
+  background-color: #3B82F6; /* Sky Blue for Active State */
+  color: #FFFFFF;
+  border-color: #3B82F6;
+}
+
+#page-number:hover {
+  background-color: #E0E3E7; /* Light Gray on Hover */
+}
 .input-field,
 .select-field {
   width: 100%;
   max-width: 300px;
   padding: 12px 16px;
   font-size: 1rem;
-  border: 1px solid #d1d5db; /* Light gray border */
+  border: 1px solid #d1d5db; 
   border-radius: 8px;
-  background-color: #f9fafb; /* Light background */
-  color: #374151; /* Dark gray text */
+  background-color: #f9fafb; 
+  color: #374151; 
   transition: border-color 0.3s, box-shadow 0.3s;
   outline: none;
 }
 
 .input-field:focus,
 .select-field:focus {
-  border-color: #2563eb; /* Blue border on focus */
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3); /* Blue shadow */
+  border-color: #2563eb; 
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3); 
 }
 
 .input-field:hover,
 .select-field:hover {
-  border-color: #9ca3af; /* Gray border on hover */
+  border-color: #9ca3af; 
 }
 
 .select-field {
-  appearance: none; /* Remove default dropdown arrow */
+  appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='gray'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 011.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 12px center;
@@ -105,7 +167,7 @@
   font-size: 1rem;
   font-weight: 600;
   color: #fff;
-  background-color: #2563eb; /* Blue background */
+  background-color: #2563eb; 
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -113,9 +175,9 @@
 }
 
 .button:hover {
-  background-color: #1e40af; /* Darker blue on hover */
+  background-color: #1e40af; 
 }
 
 .button:active {
-  transform: scale(0.95); /* Slight shrink on click */
+  transform: scale(0.95); 
 }

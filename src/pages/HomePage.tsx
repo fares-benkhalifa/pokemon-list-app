@@ -1,13 +1,11 @@
 // src/pages/HomePage.tsx
 import React, { useState, useEffect, useMemo } from 'react';
 import { useFetch } from '../hooks/useFetch';
-import PokemonCard from '../components/PokemonCard';
 import Pagination from '../components/Pagination';
-import Header from '../components/Header';
 
 const HomePage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 9;
+  const itemsPerPage = 20;
   const { data, loading, error } = useFetch(
     'https://pokeapi.co/api/v2/pokemon?limit=100&offset=0'
   );
@@ -48,7 +46,7 @@ const HomePage: React.FC = () => {
         } else if (sortOption) {
           const statA = a.stats.find((s: any) => s.stat.name === sortOption)?.base_stat || 0;
           const statB = b.stats.find((s: any) => s.stat.name === sortOption)?.base_stat || 0;
-          return statB - statA; // Descending order
+          return statB - statA;
         }
         return 0;
       });
@@ -64,7 +62,7 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Pokémon List</h1>
+      <h1 id='n' className="text-2xl font-bold mb-4">Pokémon List</h1>
 
       {/* Search and Filters */}
       <div className="mb-6 flex flex-col sm:flex-row items-center gap-4">
