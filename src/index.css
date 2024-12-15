@@ -15,6 +15,7 @@ body {
     margin: 12px 0;
     color: rgb(18, 17, 17);
 }
+}
 .modal-overlay {
   position: fixed;
   top: 0;
