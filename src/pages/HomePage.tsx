@@ -15,7 +15,6 @@ const HomePage: React.FC = () => {
   const [selectedType, setSelectedType] = useState('');
   const [sortOption, setSortOption] = useState('');
 
-  // State for Modal
   const [selectedPokemon, setSelectedPokemon] = useState<any>(null);
   const [showModal, setShowModal] = useState(false);
 
