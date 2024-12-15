@@ -8,6 +8,13 @@ body {
   padding: 0;
   height: 100%;
 }
+@media  (max-width: 600px) {
+  .modal-content h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 12px 0;
+    color: rgb(18, 17, 17);
+}
 .modal-overlay {
   position: fixed;
   top: 0;
