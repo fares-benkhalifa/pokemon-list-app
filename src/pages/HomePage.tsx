@@ -85,12 +85,12 @@ const HomePage: React.FC = () => {
           placeholder="Search Pokémon..."
           className="input-field"
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={(e) => {setSearchTerm(e.target.value); ; setCurrentPage(1)}}
         />
         <select
           className="select-field"
           value={selectedType}
-          onChange={(e) => setSelectedType(e.target.value)}
+          onChange={(e) => {setSelectedType(e.target.value);setCurrentPage(1)}}
         >
           <option value="">All Types</option>
           <option value="fire">Fire</option>
@@ -107,7 +107,7 @@ const HomePage: React.FC = () => {
         <select
           className="select-field"
           value={sortOption}
-          onChange={(e) => setSortOption(e.target.value)}
+          onChange={(e) => {setSortOption(e.target.value); setCurrentPage(1)}}
         >
           <option value="">Sort By</option>
           <option value="name">Name</option>
