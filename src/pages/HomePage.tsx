@@ -1,7 +1,7 @@
-// src/pages/HomePage.tsx
 import React, { useState, useEffect, useMemo } from 'react';
 import { useFetch } from '../hooks/useFetch';
 import Pagination from '../components/Pagination';
+import { typeBackgrounds, PokemonType } from '../const/typeBackgrounds';
 
 const HomePage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -9,10 +9,16 @@ const HomePage: React.FC = () => {
   const { data, loading, error } = useFetch(
     'https://pokeapi.co/api/v2/pokemon?limit=100&offset=0'
   );
+
   const [filteredPokemons, setFilteredPokemons] = useState<any[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedType, setSelectedType] = useState('');
   const [sortOption, setSortOption] = useState('');
+
+  // State for Modal
+  const [selectedPokemon, setSelectedPokemon] = useState<any>(null);
+  const [showModal, setShowModal] = useState(false);
+
   useEffect(() => {
     if (data && data.results) {
       const fetchDetails = async () => {
@@ -55,12 +61,22 @@ const HomePage: React.FC = () => {
     currentPage * itemsPerPage
   );
 
+  const openModal = (pokemon: any) => {
+    setSelectedPokemon(pokemon);
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setSelectedPokemon(null);
+    setShowModal(false);
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error fetching data</p>;
 
   return (
     <div className="container mx-auto p-4">
-      <h1 id='n' className="text-2xl font-bold mb-4">Pokémon List</h1>
+      <h1 id='titre' className="text-2xl font-bold mb-4">Pokémon List</h1>
 
       {/* Search and Filters */}
       <div className="mb-6 flex flex-col sm:flex-row items-center gap-4">
@@ -104,27 +120,34 @@ const HomePage: React.FC = () => {
 
       {/* Pokémon Cards */}
       <div className="pokemon-grid">
-        {displayedPokemons.map((pokemon) => (
-          <div key={pokemon.id} className="pokemon-card">
-            <img src={pokemon.sprites.front_default} alt={pokemon.name} />
-            <h3>{pokemon.name}</h3>
-            <ul>
-              <li>HP: {pokemon.stats.find((s: { stat: { name: string; }; }) => s.stat.name === 'hp')?.base_stat || 0}</li>
-              <li>Attack: {pokemon.stats.find((s: { stat: { name: string; }; }) => s.stat.name === 'attack')?.base_stat || 0}</li>
-              <li>Defense: {pokemon.stats.find((s: { stat: { name: string; }; }) => s.stat.name === 'defense')?.base_stat || 0}</li>
-              <li>Speed: {pokemon.stats.find((s: { stat: { name: string; }; }) => s.stat.name === 'speed')?.base_stat || 0}</li>
-            </ul>
-            <ul>
-              <li>Abilities:</li>
-              {pokemon.abilities.map((ability: { ability: { name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; }; }, idx: React.Key | null | undefined) => (
-                <li key={idx}>{ability.ability.name}</li>
-              ))}
-            </ul>
-            <ul>
+        {displayedPokemons.map((pokemon) => {
+          const primaryType = pokemon.types[0]?.type.name as PokemonType | undefined;
+
+          return (
+            <div
+              key={pokemon.id}
+              className="pokemon-card"
+              style={{
+                backgroundImage:
+                  primaryType && typeBackgrounds[primaryType]
+                    ? typeBackgrounds[primaryType]
+                    : 'url("/images/default.jpg")',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
+            >
+              <img src={pokemon.sprites.front_default} alt={pokemon.name} />
+              <h2>{pokemon.name}</h2>
+              <ul>
               <li>Types: {pokemon.types.map((t: {type: {name: string;};}) => t.type.name).join(", ")} </li>
             </ul>
-          </div>
-        ))}
+              <button className="btn" onClick={() => openModal(pokemon)}>
+                View Details
+              </button>
+
+            </div>
+          );
+        })}
       </div>
 
       {/* Pagination */}
@@ -133,6 +156,43 @@ const HomePage: React.FC = () => {
         totalPages={Math.ceil(filteredAndSortedPokemons.length / itemsPerPage)}
         onPageChange={setCurrentPage}
       />
+
+      {/* Modal */}
+      {showModal && selectedPokemon && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2 className="text-xl font-bold mb-2">{selectedPokemon.name}</h2>
+            <img src={selectedPokemon.sprites.front_default} alt={selectedPokemon.name} />
+            <p>Stats</p>
+            <ul>
+              <li>
+                HP: {selectedPokemon.stats.find((s: any) => s.stat.name === 'hp')?.base_stat || 0}
+              </li>
+              <li>
+                Attack:{' '}
+                {selectedPokemon.stats.find((s: any) => s.stat.name === 'attack')?.base_stat || 0}
+              </li>
+              <li>
+                Defense:{' '}
+                {selectedPokemon.stats.find((s: any) => s.stat.name === 'defense')?.base_stat || 0}
+              </li>
+              <li>
+                Speed:{' '}
+                {selectedPokemon.stats.find((s: any) => s.stat.name === 'speed')?.base_stat || 0}
+              </li>
+            </ul>
+            <p>Abilities:</p>
+            <ul>
+              {selectedPokemon.abilities.map((ability: any, idx: number) => (
+                <li key={idx}>{ability.ability.name}</li>
+              ))}
+            </ul>
+            <button className="btn-close" onClick={closeModal}>
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

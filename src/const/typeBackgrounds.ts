@@ -1,0 +1,39 @@
+export type PokemonType =
+  | 'fire'
+  | 'water'
+  | 'grass'
+  | 'electric'
+  | 'psychic'
+  | 'ice'
+  | 'fairy'
+  | 'ground'
+  | 'rock'
+  | 'dark'
+  | 'fighting'
+  | 'dragon'
+  | 'bug'
+  | 'ghost'
+  | 'poison'
+  | 'steel'
+  | 'normal'
+  | 'flying';
+export const typeBackgrounds: Record<PokemonType, string> = {
+    fire: 'url("/fire.jpg")',
+    water: 'url("/water.jpg")',
+    grass: 'url("/grass.jpg")',
+    electric: 'url("/electric.jpg")',
+    psychic: 'url("/psychic.jpg")',
+    ice: 'url("/ice.png")',
+    fairy: 'url("/fairy.png")',
+    ground: 'url("/ground.jpg")',
+    rock: 'url("/rock.png")',
+    dark: 'url("/dark.png")',
+    flying: 'url("/dark.png")',
+    fighting: 'url("/fighting.jpg")',
+    dragon: 'url("/dragon.jpg")',
+    bug: 'url("/bug.jpg")',
+    ghost: 'url("ghost.jpg")',
+    poison: 'url("/poison.jpg")',
+    steel: 'url("/steel.jpg")',
+    normal: 'url("/normal.jpg")'
+};

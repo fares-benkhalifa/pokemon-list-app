@@ -3,18 +3,143 @@
 @tailwind components;
 @tailwind utilities;
 body {
-  background-color: #FFFDF8;
+  background: #1A1A2E;
   margin: 0;
   padding: 0;
   height: 100%;
 }
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
+.modal-content {
+  background: white;
+  padding: 30px 40px; /* Increase padding for more space inside */
+  border-radius: 12px; /* Optional: rounded corners */
+  text-align: center;
+  width: 60%; /* Increase the width to make it bigger */
+  max-width: 800px; /* Optional: max width to prevent it from being too wide */
+  height: auto; /* Allow content to grow based on the content's height */
+  max-height: 80%; /* Optional: limit the maximum height */
+  overflow-y: auto; /* Allow scrolling if content overflows */
+}
+.modal-content ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.modal-content p {
+  font-size: 14px;
+  color: #666;
+  margin: 10px 0;
+}
+
+.modal-content ul {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.modal-content li {
+  background: #f3f3f3;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 5px 10px;
+  font-size: 14px;
+  color: #333;
+  text-align: left;
+  transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+.modal-content li:hover {
+  background: #e0f7fa;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn {
+  background-color: #c2fbd7;
+  border-radius: 100px;
+  box-shadow: rgba(44, 187, 99, .2) 0 -25px 18px -14px inset,rgba(44, 187, 99, .15) 0 1px 2px,rgba(44, 187, 99, .15) 0 2px 4px,rgba(44, 187, 99, .15) 0 4px 8px,rgba(44, 187, 99, .15) 0 8px 16px,rgba(44, 187, 99, .15) 0 16px 32px;
+  color: green;
+  cursor: pointer;
+  display: inline-block;
+  font-family: CerebriSans-Regular,-apple-system,system-ui,Roboto,sans-serif;
+  padding: 7px 20px;
+  text-align: center;
+  text-decoration: none;
+  transition: all 250ms;
+  border: 0;
+  font-size: 16px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.btn:hover {
+  box-shadow: rgba(44,187,99,.35) 0 -25px 18px -14px inset,rgba(44,187,99,.25) 0 1px 2px,rgba(44,187,99,.25) 0 2px 4px,rgba(44,187,99,.25) 0 4px 8px,rgba(44,187,99,.25) 0 8px 16px,rgba(44,187,99,.25) 0 16px 32px;
+  transform: scale(1.05) rotate(-1deg);
+}
+
+.btn-close {
+  background-color: #c2fbd7;
+  border-radius: 100px;
+  box-shadow: rgba(44, 187, 99, .2) 0 -25px 18px -14px inset,rgba(44, 187, 99, .15) 0 1px 2px,rgba(44, 187, 99, .15) 0 2px 4px,rgba(44, 187, 99, .15) 0 4px 8px,rgba(44, 187, 99, .15) 0 8px 16px,rgba(44, 187, 99, .15) 0 16px 32px;
+  color: green;
+  cursor: pointer;
+  display: inline-block;
+  font-family: CerebriSans-Regular,-apple-system,system-ui,Roboto,sans-serif;
+  padding: 7px 20px;
+  text-align: center;
+  text-decoration: none;
+  transition: all 250ms;
+  border: 0;
+  font-size: 16px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+.btn-close:hover {
+  box-shadow: rgba(44,187,99,.35) 0 -25px 18px -14px inset,rgba(44,187,99,.25) 0 1px 2px,rgba(44,187,99,.25) 0 2px 4px,rgba(44,187,99,.25) 0 4px 8px,rgba(44,187,99,.25) 0 8px 16px,rgba(44,187,99,.25) 0 16px 32px;
+  transform: scale(1.05) rotate(-1deg);
+}
 .pokemon-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr); 
   gap: 16px; 
 }
 
+@media  (max-width: 1200px) {
+  .pokemon-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 16px; 
+  }
+}
+@media  (max-width: 900px) {
+  .pokemon-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 16px; 
+  }
+}
+@media  (max-width: 500px) {
+  .pokemon-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr); 
+    gap: 16px; 
+  }
+}
 .pokemon-row {
   display: flex;
   justify-content: space-between;
@@ -33,12 +158,9 @@ body {
   flex-direction: column;
   align-items: center;
   padding: 16px;
-  border: 1px solid #E0E3E7;
-  border-radius: 20%;
-  background-color: #fff;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid #000000;
+  border-radius: 15%;
   transition: transform 0.2s, box-shadow 0.2s;
-  color: #3A5CA8;
   margin: 10px;
 }
 
@@ -46,34 +168,71 @@ body {
   transform: translateY(-4px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
-
-.pokemon-card img {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
+@keyframes moveUpAndDown {
+  0%, 100% {
+    transform: translateY(0); 
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
-.pokemon-card img:hover {
-  transform: scale(1.1);
-}
-.pokemon-card h3 {
-  font-size: 1.2rem;
+.modal-content h2 {
+  font-size: 4rem;
   font-weight: bold;
   margin: 12px 0;
+  color: rgb(18, 17, 17);
 }
-#n {
-  text-align: center;
-  color: crimson;
+.modal-content img {
+  width: 200px;
+  height: 130px;
+  object-fit: contain;
+  animation: moveUpAndDown 1.5s ease-in-out infinite; 
+  transition: transform 0.2s; 
+}
+.pokemon-card img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  animation: moveUpAndDown 1.5s ease-in-out infinite; 
+  transition: transform 0.2s; 
+}
+.modal-content img, .pokemon-card img:hover {
+  transform: scale(1.1);
+}
+.pokemon-card h2 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin: 12px 0;
+  color: whitesmoke;
 }
 .pokemon-card ul {
   list-style: none;
   padding: 0;
-  margin: 8px 0;
+  margin: 15px 0;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+.pokemon-card li {
+  padding: 8px 15px;
+  background: linear-gradient(145deg, #00e8b7, #00c6a5);
+  color: white;
+  font-size: 0.9rem;
+  font-weight: bold;
+  border-radius: 12px;
+  text-transform: capitalize;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.pokemon-card li:hover{
+  transform: translateY(-3px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+}
+#n {
+  text-align: center;
+  color: #ADD8E6;
 }
 
-.pokemon-card ul li {
-  font-size: 1.2rem;
-  color: #e74c3c;
-}
 .pagination-items{
   display: flex;
   align-items: center;
@@ -88,6 +247,10 @@ button, #page-number {
   border-radius: 5px;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
+}
+#titre {
+  text-align: center;
+  color: whitesmoke;
 }
 #previous-button {
   background-color: #3B82F6; /* Sky Blue */
