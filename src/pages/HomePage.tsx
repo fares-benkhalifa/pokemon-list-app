@@ -78,7 +78,7 @@ const HomePage: React.FC = () => {
       <h1 id='titre' className="text-2xl font-bold mb-4">Pokémon List</h1>
 
       {/* Search and Filters */}
-      <div className="mb-6 flex flex-col sm:flex-row items-center gap-4">
+      <div className="search-filter-sort mb-6 flex flex-col sm:flex-row items-center gap-4 justify-center">
         <input
           type="text"
           placeholder="Search Pokémon..."
@@ -155,7 +155,6 @@ const HomePage: React.FC = () => {
         totalPages={Math.ceil(filteredAndSortedPokemons.length / itemsPerPage)}
         onPageChange={setCurrentPage}
       />
-
       {/* Modal */}
       {showModal && selectedPokemon && (
         <div className="modal-overlay">
