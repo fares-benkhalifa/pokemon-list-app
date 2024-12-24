@@ -2,12 +2,14 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useFetch } from '../hooks/useFetch';
 import Pagination from '../components/Pagination';
 import { typeBackgrounds, PokemonType } from '../const/typeBackgrounds';
+import Modal from '../components/Modal';
+import SearchAndFilter from '../components/SearchAndFilter';
 
 const HomePage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
   const { data, loading, error } = useFetch(
-    'https://pokeapi.co/api/v2/pokemon?limit=100&offset=0'
+    `https://pokeapi.co/api/v2/pokemon?limit=1302&offset=${(currentPage - 1) * itemsPerPage}`
   );
 
   const [filteredPokemons, setFilteredPokemons] = useState<any[]>([]);
@@ -70,52 +72,27 @@ const HomePage: React.FC = () => {
     setShowModal(false);
   };
 
+  const resetPage = () => {
+    setCurrentPage(1);
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error fetching data</p>;
 
   return (
     <div className="container mx-auto p-4">
-      <h1 id='titre' className="text-2xl font-bold mb-4">Pokémon List</h1>
+      <h1 id="titre" className="text-2xl font-bold mb-4">Pokémon List</h1>
 
-      {/* Search and Filters */}
-      <div className="search-filter-sort mb-6 flex flex-col sm:flex-row items-center gap-4 justify-center">
-        <input
-          type="text"
-          placeholder="Search Pokémon..."
-          className="input-field"
-          value={searchTerm}
-          onChange={(e) => {setSearchTerm(e.target.value); ; setCurrentPage(1)}}
-        />
-        <select
-          className="select-field"
-          value={selectedType}
-          onChange={(e) => {setSelectedType(e.target.value);setCurrentPage(1)}}
-        >
-          <option value="">All Types</option>
-          <option value="fire">Fire</option>
-          <option value="water">Water</option>
-          <option value="grass">Grass</option>
-          <option value="electric">Electric</option>
-          <option value="ice">Ice</option>
-          <option value="rock">Rock</option>
-          <option value="ground">Ground</option>
-          <option value="psychic">Psychic</option>
-          <option value="dark">Dark</option>
-          <option value="fairy">Fairy</option>
-        </select>
-        <select
-          className="select-field"
-          value={sortOption}
-          onChange={(e) => {setSortOption(e.target.value); setCurrentPage(1)}}
-        >
-          <option value="">Sort By</option>
-          <option value="name">Name</option>
-          <option value="attack">Attack</option>
-          <option value="hp">HP</option>
-          <option value="defense">Defense</option>
-          <option value="speed">Speed</option>
-        </select>
-      </div>
+      {/* Search and Filter */}
+      <SearchAndFilter
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        selectedType={selectedType}
+        setSelectedType={setSelectedType}
+        sortOption={sortOption}
+        setSortOption={setSortOption}
+        resetPage={resetPage}
+      />
 
       {/* Pokémon Cards */}
       <div className="pokemon-grid">
@@ -138,12 +115,13 @@ const HomePage: React.FC = () => {
               <img src={pokemon.sprites.front_default} alt={pokemon.name} />
               <h2>{pokemon.name}</h2>
               <ul>
-              <li>Types: {pokemon.types.map((t: {type: {name: string;};}) => t.type.name).join(", ")} </li>
-            </ul>
+                <li>
+                  Types: {pokemon.types.map((t: { type: { name: string } }) => t.type.name).join(', ')}
+                </li>
+              </ul>
               <button className="btn" onClick={() => openModal(pokemon)}>
                 View Details
               </button>
-
             </div>
           );
         })}
@@ -155,41 +133,10 @@ const HomePage: React.FC = () => {
         totalPages={Math.ceil(filteredAndSortedPokemons.length / itemsPerPage)}
         onPageChange={setCurrentPage}
       />
+
       {/* Modal */}
       {showModal && selectedPokemon && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <h2 className="text-xl font-bold mb-2">{selectedPokemon.name}</h2>
-            <img src={selectedPokemon.sprites.front_default} alt={selectedPokemon.name} />
-            <p>Stats</p>
-            <ul>
-              <li>
-                HP: {selectedPokemon.stats.find((s: any) => s.stat.name === 'hp')?.base_stat || 0}
-              </li>
-              <li>
-                Attack:{' '}
-                {selectedPokemon.stats.find((s: any) => s.stat.name === 'attack')?.base_stat || 0}
-              </li>
-              <li>
-                Defense:{' '}
-                {selectedPokemon.stats.find((s: any) => s.stat.name === 'defense')?.base_stat || 0}
-              </li>
-              <li>
-                Speed:{' '}
-                {selectedPokemon.stats.find((s: any) => s.stat.name === 'speed')?.base_stat || 0}
-              </li>
-            </ul>
-            <p>Abilities:</p>
-            <ul>
-              {selectedPokemon.abilities.map((ability: any, idx: number) => (
-                <li key={idx}>{ability.ability.name}</li>
-              ))}
-            </ul>
-            <button className="btn-close" onClick={closeModal}>
-              Close
-            </button>
-          </div>
-        </div>
+        <Modal pokemon={selectedPokemon} onClose={closeModal} />
       )}
     </div>
   );
