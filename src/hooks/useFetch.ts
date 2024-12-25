@@ -18,7 +18,7 @@ export const useFetch = (url: string) => {
         const listData = await listResponse.json();
         setData(listData);
 
-        // Progressive fetching
+ 
         const fetchDetails = async (pokemonList: { name: string; url: string }[]) => {
           for (const pokemon of pokemonList) {
             if (!details[pokemon.url]) {
@@ -29,7 +29,7 @@ export const useFetch = (url: string) => {
           }
         };
 
-        fetchDetails(listData.results); // Start progressive fetching
+        fetchDetails(listData.results);
       } catch (err) {
         setError(err as Error);
       } finally {
