@@ -1,4 +1,6 @@
 import React from 'react';
+import ReactPaginate from 'react-paginate';
+import "../Pagination.css";
 
 type PaginationProps = {
   currentPage: number;
@@ -6,31 +8,35 @@ type PaginationProps = {
   onPageChange: (page: number) => void;
 };
 
-const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPageChange }) => (
-<div className="pagination-items">
-  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center">
-    <button
-      id="previous-button"
-      disabled={currentPage === 1}
-      onClick={() => onPageChange(currentPage - 1)}
-      className="px-4 py-2 bg-blue-500 text-white font-semibold rounded mr-4 disabled:bg-gray-300 disabled:opacity-50"
-    >
-      Previous
-    </button>
-    <span id="page-number" className="text-lg font-semibold text-gray-700">
-      {`Page ${currentPage} of ${totalPages}`}
-    </span>
-    <button
-      id="next-button"
-      disabled={currentPage === totalPages || totalPages == 0}
-      onClick={() => onPageChange(currentPage + 1)}
-      className="px-4 py-2 bg-green-500 text-white font-semibold rounded ml-4 disabled:bg-gray-300 disabled:opacity-50"
-    >
-      Next
-    </button>
-  </div>
-</div>
+const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPageChange }) => {
+  const handlePageClick = (selectedItem: { selected: number }) => {
+    onPageChange(selectedItem.selected + 1);
+  };
 
-);
+  return (
+    <div className="pagination-container mt-6">
+      <ReactPaginate
+        previousLabel={'← Previous'}
+        nextLabel={'Next →'}
+        breakLabel={'...'}
+        pageCount={totalPages}
+        marginPagesDisplayed={1}
+        pageRangeDisplayed={2}
+        onPageChange={handlePageClick}
+        containerClassName={'pagination'}
+        pageClassName={'page-item'}
+        pageLinkClassName={'page-link'}
+        previousClassName={'page-item'}
+        previousLinkClassName={'page-link'}
+        nextClassName={'page-item'}
+        nextLinkClassName={'page-link'}
+        breakClassName={'page-item'}
+        breakLinkClassName={'page-link'}
+        activeClassName={'active'}
+        forcePage={currentPage - 1}
+      />
+    </div>
+  );
+};
 
 export default Pagination;

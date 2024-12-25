@@ -4,6 +4,7 @@ import Pagination from '../components/Pagination';
 import { typeBackgrounds, PokemonType } from '../const/typeBackgrounds';
 import Modal from '../components/Modal';
 import SearchAndFilter from '../components/SearchAndFilter';
+import { TailSpin } from 'react-loader-spinner'; // Import loader spinner
 
 const HomePage: React.FC = () => {
   const itemsPerPage = 20;
@@ -30,31 +31,29 @@ const HomePage: React.FC = () => {
     });
   }, [allPokemons, searchTerm, selectedType, details]);
 
-const sortedPokemons = useMemo(() => {
-  const pokemonsWithDetails = filteredPokemons
-    .map((pokemon) => details[pokemon.url])
-    .filter(Boolean);
+  const sortedPokemons = useMemo(() => {
+    const pokemonsWithDetails = filteredPokemons
+      .map((pokemon) => details[pokemon.url])
+      .filter(Boolean);
 
-  if (sortOption === 'name') {
-    return pokemonsWithDetails.sort((a, b) => a.name.localeCompare(b.name));
-  } else if (sortOption) {
-    return pokemonsWithDetails.sort((a, b) => {
-      const statA = a.stats.find((stat: { stat: { name: string }; base_stat: number }) => stat.stat.name === sortOption)?.base_stat || 0;
-      const statB = b.stats.find((stat: { stat: { name: string }; base_stat: number }) => stat.stat.name === sortOption)?.base_stat || 0;
-      return statB - statA;
-    });
-  }
+    if (sortOption === 'name') {
+      return pokemonsWithDetails.sort((a, b) => a.name.localeCompare(b.name));
+    } else if (sortOption) {
+      return pokemonsWithDetails.sort((a, b) => {
+        const statA = a.stats.find((stat: { stat: { name: string }; base_stat: number }) => stat.stat.name === sortOption)?.base_stat || 0;
+        const statB = b.stats.find((stat: { stat: { name: string }; base_stat: number }) => stat.stat.name === sortOption)?.base_stat || 0;
+        return statB - statA;
+      });
+    }
 
-  return pokemonsWithDetails;
-}, [filteredPokemons, details, sortOption]);
+    return pokemonsWithDetails;
+  }, [filteredPokemons, details, sortOption]);
 
-const paginatedPokemons = useMemo(() => {
-  const start = (currentPage - 1) * itemsPerPage;
-  const end = start + itemsPerPage;
-  return sortedPokemons.slice(start, end);
-}, [sortedPokemons, currentPage]);
-
-
+  const paginatedPokemons = useMemo(() => {
+    const start = (currentPage - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    return sortedPokemons.slice(start, end);
+  }, [sortedPokemons, currentPage]);
 
   const openModal = (pokemon: any) => {
     setSelectedPokemon(pokemon);
@@ -70,16 +69,27 @@ const paginatedPokemons = useMemo(() => {
     setCurrentPage(1);
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (loading)
+    return (
+      <div className="loading-container">
+        <TailSpin
+          height="80"
+          width="80"
+          color="#4fa94d"
+          ariaLabel="loading-indicator"
+        />
+      </div>
+    );
+  
+
   if (error) return <p>Error fetching data</p>;
 
   return (
     <div className="container mx-auto p-4">
       <h1 id="titre" className="text-2xl font-bold mb-4">
-        Pokémon List
+        Pokemon List
       </h1>
 
-      {/* Search and Filter */}
       <SearchAndFilter
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
@@ -90,11 +100,10 @@ const paginatedPokemons = useMemo(() => {
         resetPage={resetPage}
       />
 
-      {/* Pokémon Cards */}
       <div className="pokemon-grid">
         {paginatedPokemons.map((pokemon) => {
           const primaryType = pokemon.types[0]?.type.name as PokemonType | undefined;
-
+          const defaultImg = './pokeball.png';
           return (
             <div
               key={pokemon.id}
@@ -108,7 +117,7 @@ const paginatedPokemons = useMemo(() => {
                 backgroundPosition: 'center',
               }}
             >
-              <img src={pokemon.sprites.front_default} alt={pokemon.name} />
+              <img src={pokemon.sprites.front_default || defaultImg} alt={pokemon.name} />
               <h2>{pokemon.name}</h2>
               <ul>
                 <li>
@@ -123,14 +132,12 @@ const paginatedPokemons = useMemo(() => {
         })}
       </div>
 
-      {/* Pagination */}
       <Pagination
         currentPage={currentPage}
         totalPages={Math.ceil(filteredPokemons.length / itemsPerPage)}
-        onPageChange={setCurrentPage}
+        onPageChange={(page) => setCurrentPage(page)}
       />
 
-      {/* Modal */}
       {showModal && selectedPokemon && <Modal pokemon={selectedPokemon} onClose={closeModal} />}
     </div>
   );
