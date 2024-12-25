@@ -60,10 +60,23 @@
     }
   
     .page-link {
-      font-size: 12px; /* Smaller font size for compact view */
+      font-size: 11px; /* Smaller font size for compact view */
       padding: 6px 10px; /* Smaller padding for better fit */
-      min-width: 32px; /* Ensure a minimum clickable size */
+      min-width: 25px; /* Ensure a minimum clickable size */
       text-align: center; /* Align text centrally */
     }
   }
+  @media screen and (max-width: 400px) {
+    .pagination {
+      gap: 4px; /* Reduce spacing between items */
+      justify-content: center; /* Center align for very small screens */
+      flex-wrap: wrap; /* Wrap items if needed */
+    }
   
+    .page-link {
+      font-size: 8.5px; /* Smaller font size for compact view */
+      padding: 6px 10px; /* Smaller padding for better fit */
+      min-width: 20px; /* Ensure a minimum clickable size */
+      text-align: center; /* Align text centrally */
+    }
+  }
