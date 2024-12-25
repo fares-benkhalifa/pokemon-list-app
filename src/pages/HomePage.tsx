@@ -30,33 +30,31 @@ const HomePage: React.FC = () => {
     });
   }, [allPokemons, searchTerm, selectedType, details]);
 
-  const sortedPokemons = useMemo(() => {
-    const pokemonsWithDetails = filteredPokemons
-      .map((pokemon) => details[pokemon.url])
-      .filter(Boolean);
+const sortedPokemons = useMemo(() => {
+  const pokemonsWithDetails = filteredPokemons
+    .map((pokemon) => details[pokemon.url])
+    .filter(Boolean);
 
-    if (sortOption === 'name') {
-      return pokemonsWithDetails.sort((a, b) => a.name.localeCompare(b.name));
-    } else if (sortOption) {
-      return pokemonsWithDetails.sort((a, b) => {
-        const statA =
-          a.stats.find((stat: { stat: { name: string }; base_stat: number }) => stat.stat.name === sortOption)
-            ?.base_stat || 0;
-        const statB =
-          b.stats.find((stat: { stat: { name: string }; base_stat: number }) => stat.stat.name === sortOption)
-            ?.base_stat || 0;
-        return statB - statA;
-      });
-    }
+  if (sortOption === 'name') {
+    return pokemonsWithDetails.sort((a, b) => a.name.localeCompare(b.name));
+  } else if (sortOption) {
+    return pokemonsWithDetails.sort((a, b) => {
+      const statA = a.stats.find((stat: { stat: { name: string }; base_stat: number }) => stat.stat.name === sortOption)?.base_stat || 0;
+      const statB = b.stats.find((stat: { stat: { name: string }; base_stat: number }) => stat.stat.name === sortOption)?.base_stat || 0;
+      return statB - statA;
+    });
+  }
 
-    return pokemonsWithDetails;
-  }, [filteredPokemons, details, sortOption]);
+  return pokemonsWithDetails;
+}, [filteredPokemons, details, sortOption]);
 
-  const paginatedPokemons = useMemo(() => {
-    const start = (currentPage - 1) * itemsPerPage;
-    const end = start + itemsPerPage;
-    return sortedPokemons.slice(start, end);
-  }, [sortedPokemons, currentPage]);
+const paginatedPokemons = useMemo(() => {
+  const start = (currentPage - 1) * itemsPerPage;
+  const end = start + itemsPerPage;
+  return sortedPokemons.slice(start, end);
+}, [sortedPokemons, currentPage]);
+
+
 
   const openModal = (pokemon: any) => {
     setSelectedPokemon(pokemon);
