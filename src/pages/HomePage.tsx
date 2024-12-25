@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useFetch } from '../hooks/useFetch';
 import Pagination from '../components/Pagination';
 import { typeBackgrounds, PokemonType } from '../const/typeBackgrounds';
@@ -6,61 +6,39 @@ import Modal from '../components/Modal';
 import SearchAndFilter from '../components/SearchAndFilter';
 
 const HomePage: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
-  const { data, loading, error } = useFetch(
-    `https://pokeapi.co/api/v2/pokemon?limit=1302&offset=0`
-  );
-
-  const [filteredPokemons, setFilteredPokemons] = useState<any[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedType, setSelectedType] = useState('');
   const [sortOption, setSortOption] = useState('');
-
-  const [selectedPokemon, setSelectedPokemon] = useState<any>(null);
   const [showModal, setShowModal] = useState(false);
+  const [selectedPokemon, setSelectedPokemon] = useState<any>(null);
 
-  useEffect(() => {
-    if (data && data.results) {
-      const fetchDetails = async () => {
-        const details = await Promise.all(
-          data.results.map(async (pokemon: any) => {
-            const res = await fetch(pokemon.url);
-            return res.json();
-          })
-        );
-        setFilteredPokemons(details);
-      };
-      fetchDetails();
-    }
-  }, [data]);
-
-  const filteredAndSortedPokemons = useMemo(() => {
-    if (!filteredPokemons) return [];
-
-    return filteredPokemons
-      .filter((pokemon) => {
-        const matchesSearch = pokemon.name.toLowerCase().includes(searchTerm.toLowerCase());
-        const matchesType =
-          selectedType === '' || pokemon.types.some((t: any) => t.type.name === selectedType);
-        return matchesSearch && matchesType;
-      })
-      .sort((a, b) => {
-        if (sortOption === 'name') {
-          return a.name.localeCompare(b.name);
-        } else if (sortOption) {
-          const statA = a.stats.find((s: any) => s.stat.name === sortOption)?.base_stat || 0;
-          const statB = b.stats.find((s: any) => s.stat.name === sortOption)?.base_stat || 0;
-          return statB - statA;
-        }
-        return 0;
-      });
-  }, [filteredPokemons, searchTerm, selectedType, sortOption]);
-
-  const displayedPokemons = filteredAndSortedPokemons.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
+  const { data, details, loading, error } = useFetch(
+    `https://pokeapi.co/api/v2/pokemon?limit=1302&offset=0`
   );
+
+  const allPokemons = data?.results || [];
+
+  const filteredPokemons = useMemo(() => {
+    return allPokemons.filter((pokemon) => {
+      const matchesSearch = pokemon.name.toLowerCase().includes(searchTerm.toLowerCase());
+      const detailsData = details[pokemon.url];
+      const matchesType =
+        selectedType === '' || (detailsData && detailsData.types.some((t: any) => t.type.name === selectedType));
+      return matchesSearch && matchesType;
+    });
+  }, [allPokemons, searchTerm, selectedType, details]);
+
+  const paginatedPokemons = useMemo(() => {
+    const start = (currentPage - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    return filteredPokemons.slice(start, end);
+  }, [filteredPokemons, currentPage]);
+
+  const displayedPokemons = useMemo(() => {
+    return paginatedPokemons.map((pokemon) => details[pokemon.url]).filter(Boolean);
+  }, [paginatedPokemons, details]);
 
   const openModal = (pokemon: any) => {
     setSelectedPokemon(pokemon);
@@ -81,7 +59,9 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 id="titre" className="text-2xl font-bold mb-4">Pokémon List</h1>
+      <h1 id="titre" className="text-2xl font-bold mb-4">
+        Pokémon List
+      </h1>
 
       {/* Search and Filter */}
       <SearchAndFilter
@@ -130,14 +110,12 @@ const HomePage: React.FC = () => {
       {/* Pagination */}
       <Pagination
         currentPage={currentPage}
-        totalPages={Math.ceil(filteredAndSortedPokemons.length / itemsPerPage)}
+        totalPages={Math.ceil(filteredPokemons.length / itemsPerPage)}
         onPageChange={setCurrentPage}
       />
 
       {/* Modal */}
-      {showModal && selectedPokemon && (
-        <Modal pokemon={selectedPokemon} onClose={closeModal} />
-      )}
+      {showModal && selectedPokemon && <Modal pokemon={selectedPokemon} onClose={closeModal} />}
     </div>
   );
 };
