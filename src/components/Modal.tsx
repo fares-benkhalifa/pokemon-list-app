@@ -25,7 +25,6 @@ const Modal: React.FC<ModalProps> = ({ pokemon, onClose }) => {
     const stat = pokemon.stats.find((s: any) => s.stat.name.toLowerCase() === statName);
     return stat?.base_stat || 0;
   });
-console.log(statsValues)
   const maxStatValue = Math.max(...statsValues);
   const radarData = {
     labels: statsLabels,
@@ -48,6 +47,14 @@ console.log(statsValues)
         suggestedMax: maxStatValue + 10, // Dynamically adjust max range
         ticks: {
           stepSize: 20,
+          font: {
+            size: 12, // Set the desired font size here
+          },
+        },
+        pointLabels: {
+          font: {
+            size: 16, // Set the desired font size for the labels here
+          },
         },
       },
     },
