@@ -44,16 +44,16 @@ const Modal: React.FC<ModalProps> = ({ pokemon, onClose }) => {
     scales: {
       r: {
         suggestedMin: 0,
-        suggestedMax: maxStatValue + 10, // Dynamically adjust max range
+        suggestedMax: maxStatValue + 10, 
         ticks: {
           stepSize: 20,
           font: {
-            size: 12, // Set the desired font size here
+            size: 12, 
           },
         },
         pointLabels: {
           font: {
-            size: 16, // Set the desired font size for the labels here
+            size: 16, 
           },
         },
       },
