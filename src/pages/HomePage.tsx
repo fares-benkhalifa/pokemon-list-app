@@ -9,7 +9,7 @@ const HomePage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
   const { data, loading, error } = useFetch(
-    `https://pokeapi.co/api/v2/pokemon?limit=1302&offset=${(currentPage - 1) * itemsPerPage}`
+    `https://pokeapi.co/api/v2/pokemon?limit=1302&offset=0`
   );
 
   const [filteredPokemons, setFilteredPokemons] = useState<any[]>([]);
